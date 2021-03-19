@@ -16,12 +16,13 @@ using DSharpPlus.CommandsNext.Exceptions;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using DiscordBot.Commands;
+using DiscordBot.Modules.Quotes;
 
 namespace DiscordBot
 {
     class Bot
     {
-        private const string DiscordConfigPath = "discordConfig.json";
+        private const string DiscordConfigPath = "Config/discordConfig.json";
 
         public const string BotName = "GucciBot";
         internal static EventId BotInventId { get; } = new EventId(83, BotName);
@@ -86,6 +87,7 @@ namespace DiscordBot
                     JsonStorage.SetValue(DiscordConfigPath, property.Key, Console.ReadLine());
                 }
             }
+            //QuotesModule.Init("Config/Quotes");
         }
 
         private Task OnGuildAvailable(DiscordClient client, GuildCreateEventArgs e)
@@ -150,7 +152,7 @@ namespace DiscordBot
             var collection = new ServiceCollection();
 
             collection.AddSingleton<Random>();
-
+            collection.AddSingleton(new QuotesProvider("Config/Quotes"));
             return collection.BuildServiceProvider();
         }
     }
